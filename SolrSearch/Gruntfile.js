@@ -157,7 +157,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-durandal');
 
-    grunt.registerTask('default', ['jshint', 'jasmine:dev', 'connect:dev:livereload', 'open:dev', 'watch:dev']);
-    grunt.registerTask('build', ['jshint', 'jasmine:dev', 'clean', 'copy', 'durandal:main', 'uglify', 'jasmine:build', 'connect:build', 'open:build', 'watch:build']);
+    grunt.registerTask('default', ['jshint', 'jasmine:dev']);
+    grunt.registerTask('build', ['jshint', 'jasmine:dev', 'clean', 'copy', 'durandal:main', 'uglify', 'jasmine:build']);
 
 };

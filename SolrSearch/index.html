@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Solr Search</title>
+        
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="apple-touch-startup-image" href="lib/durandal/img/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+        <link rel="apple-touch-startup-image" href="lib/durandal/img/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+        <link rel="apple-touch-icon" href="lib/durandal/img/icon.png"/>
+        
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="css/ie10mobile.css" />
+        <link rel="stylesheet" href="lib/durandal/css/durandal.css" />
+        <link rel="stylesheet" href="css/starterkit.css" />
+        <link href="css/main.css" rel="stylesheet" />
+        
+        <script type="text/javascript">
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                var mq = "@@-ms-viewport{width:auto!important}";
+                msViewportStyle.appendChild(document.createTextNode(mq));
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        </script>
+    </head>
+    <body>
+        <!-- Navbar
+    	================================================== -->
+        <nav class="navbar navbar-default noMargin no-border topNav z-up" id="top_navbar" role="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-1 col-sm-1 col-lg-2 logo">
+                        <a href="http://www.saccounty.net" title="Sacramento County">
+                            <div class="logo-white" style="width:150px; height:35px;"></div>
+                        </a>
+                    </div>
+                    <div class="pull-right hidden-sm hidden-xs">
+                        <ul class="nav navbar-nav pull-right topList">
+                            <li><a href="http://www.saccounty.net/live-visit/Pages/default.aspx" class="navbar-link">Live / Visit</a></li>
+                            <li><a href="http://www.saccounty.net/Business/Pages/default.aspx" class="navbar-link">Business</a></li>
+                            <li><a href="http://www.saccounty.net/Government/Pages/default.aspx" class="navbar-link">Government</a></li>
+                        </ul>
+                    </div>
+                    <div id="slidein-panel" class="visible-xs">
+                        <div id="slidein-panel-container">
+                            <a id="slidein-panel-btn" href="#" style=""><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul>
+                            <li><a href="http://www.saccounty.net/live-visit/Pages/default.aspx"> Live / Visit</a></li>
+                            <li><a href="http://www.saccounty.net/Business/Pages/default.aspx"> Business</a></li>
+                            <li><a href="http://www.saccounty.net/Government/Pages/default.aspx"> Government</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Header Backgrounds
+    	================================================== -->
+        <div class="fullWidth full-gradBlue-bg h-divider-top" id="pageHeader">
+            <div class="masthead" id="meetingMast">
+                <div class="container">
+                    <div class="row">
+                        <div class=" col-xs-12 text-center pad-top-40 pad-bottom-30">
+                            <h1 class="page-name" id="title"><a>Agenda Search</a></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- LOADING IMAGE
+    ------------------------------->
+        <div id="applicationHost">
+            <div id="loadingMain">
+                <div id="loading-center">
+                    <div id="loading-center-absolute">
+                        <div class="object" id="object_four"></div>
+                        <div class="object" id="object_three"></div>
+                        <div class="object" id="object_two"></div>
+                        <div class="object" id="object_one"></div>
+                        <div class="centerLogo">
+                            <img src="css/img/logo-white.png" class="img-responsive" title="SacCounty" alt="" width="200" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="lib/require/require.js" data-main="app/main"></script>
+    </body>
+</html>

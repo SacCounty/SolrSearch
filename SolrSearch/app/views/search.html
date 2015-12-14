@@ -1,0 +1,228 @@
+﻿<script type="text/html" id="item-template">
+    <div>
+        <a target="_blank" data-bind="html: pagename, attr: {href: pageurl}"></a>
+    </div>
+</script>
+<script type="text/html" id="group-template">
+    <div class="result-document">
+        <div>
+            <span><span><b>Meeting Title: </b></span><a target="_blank" data-bind="html: meetingname, attr: { href: meetingurl }"></a></span><br />
+            <span><span><b>Item Title: </b></span><span data-bind="html: itemname"></span></span><br/>
+           <!--ko if:  $data.hasOwnProperty("department")-->
+            <span><span><b>Submitting Department: </b></span><span data-bind="text: department"></span></span>
+            <!-- /ko-->
+        </div>
+        <div>
+            <span>Documents found for this meeting item: <span data-bind="text: numFound">
+                </span> Showing: <span data-bind="text: docs().length, visible: !showPaged()"></span> 
+                <span data-bind="visible: showPaged"><span data-bind="text: ((page() - 1) * 10) + 1"></span> - <span data-bind="text: ((page() - 1) * 10) + docs().length"></span>
+            </span> 
+            <a href="javascript:void(0);" data-bind="visible: numFound > sumList().length, click: function(data, event) { $root.goShowAll($parent, data);}, text: linkText"></a></span>
+            <div class="pull-right" data-bind="visible: showPaged">
+                <a href="javascript:void(0);" data-bind="enable: allowPrev, click: function(data, event){$root.pageGroup(data, false);}">prev</a> | <a href="javascript:void(0);" data-bind="enable: allowNext, click: function(data, event){$root.pageGroup(data, true);}">next</a>
+            </div>
+            <div data-bind="template: {name: 'item-template', foreach: docs}">
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="doc-template">
+    <div class="result-document">
+        <div>
+            <span><span><b>Meeting Title: </b></span><a target="_blank" data-bind="html: meetingname, attr: { href:  meetingurl }"></a></span><br />
+            <span><span><b>Item Title: </b></span><span data-bind="html: itemname"></span></span><br />
+            <!--ko if:  $data.hasOwnProperty("department")-->
+            <span><span><b>Submitting Department: </b></span><span data-bind="text: department"></span></span>
+            <!-- /ko -->
+        </div>
+        <div>
+            <a target="_blank" data-bind="html: pagename, attr: {href: pageurl}"></a>
+        </div>
+        <!-- ko if: summary -->
+        <div class="result-body" data-bind="html:summary">
+        </div>
+        <!-- /ko -->
+    </div>
+</script>
+
+<!-- TOP BUTTONS
+================================================== -->
+
+<div class="container-fluid pad-top-20">
+    <div class="row">
+        
+                <a data-bind="click: function() { goGroup(false); }" class="btn btn-lg btn-default">
+                    <i class="fa fa-refresh"></i> Documents
+                </a>
+          
+                <a data-bind="click: function() { goGroup(true); }" class="btn btn-lg btn-default">
+                    <i class="fa fa-users"></i> Agenda Items
+                </a>
+            
+        
+        <div class="clearfix"><hr></div>
+    </div>
+</div>
+
+
+<!-- Sorting
+=============================================== -->
+<div id="content" class="pad-bottom-40">
+    <!-- Search bar
+    ================================================== -->
+    <div class="row margin-bottom-20">
+        <div class="col-xs-9 margin-bottom-20">
+            <!--
+            <div class="query-box">
+                <form id="query-form">
+                    <div class="inputs,ui-widget">
+                        <span>
+                            Find:
+                            <input type="text" id="q" name="q" data-bind="value:Query, valueUpdate: ['blur']" />
+                            <input type="submit" id="querySubmit" class="btn btn-primary" data-bind="click: function() { goQuery(); }" value="Search">
+                            <input type="button" class="btn btn-primary" data-bind="click: function() { Reset(); }" value="Reset" />
+                        </span>
+                        <div class="query-boost">
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>-->
+            
+            <form class="form-horizontal" id="query-form">
+                <div class="inputs,ui-widget">
+                    <div class="input-group">
+                        <label for="q" class="control-label sr-only">Find:</label>
+                        <input type="text" class="form-control" id="q" placeholder="Find" data-bind="value:Query, valueUpdate: ['blur']" >
+                    
+                    <span class="input-group-btn">
+                        <input type="submit" id="querySubmit" class="btn btn-primary" data-bind="click: function() { goQuery(true); }" value="Search">
+                        <input type="button" class="btn btn-primary" data-bind="click: function() { goReset(); }" value="Reset" />
+                    </span>
+                    </div> 
+            	</div>
+                    <div class="query-boost">
+
+                    </div>
+            </form>
+            
+            
+            <div data-bind="visible:Suggestions().length > 0">
+                <span>Did you mean</span>
+                <div data-bind="foreach: Suggestions">
+                    <a href="#{url_for_home}#{lensNoQ}&q=$esc.url($collation.collationQuery)">$esc.html($collation.collationQuery)</a> ($collation.hits)?
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 pull-right">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="hidden-sm hidden-xs"> Sort </label>
+                    <select class="form-control" data-bind="options: Sorts, optionsText: 'Display', value: Sort, event:{ change: function() { goSort(); }}"></select>
+                </div>
+            </form>
+        </div>
+	</div>
+
+            <!-- Sidebar
+            ================================================== -->
+            <div class="col-xs-4">
+                <div class="navigators">
+                    <div data-bind="foreach: FieldFacets">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title" data-bind="text: Display">
+                                    <!--Field Facets-->
+                                </h3>
+                            </div>
+                            <div>
+                                <ul data-bind="foreach: DisplayConstraints">
+                                    <li><input type="checkbox" data-bind="checked: Selected">&nbsp;&nbsp;<a href="#" data-bind="text: Name, click: function(data, event) { $root.setFacet(data, event); }"></a> <span data-bind="text: Count" /></li>
+                                </ul>
+                                <a class="btn btn-primary pull-right margin-bottom-15" href="javascript:void(0);" data-bind="visible: Constraints().length > 3, click: ToggleShowAll, text: ToggleText"></a>
+                        	    <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-bind="foreach: RangeFacets">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <!--Range Facets-->
+                                    Meeting Year
+                                </h3>
+                            </div>
+                            <div >
+                                <ul id="meetingYear" data-bind="foreach: Constraints">
+                                    <li><input type="checkbox" data-bind="checked: Selected">&nbsp;&nbsp;<a href="#" data-bind="text: Display, click: function(data, event) { $root.setFacet(data, event); }"></a> <span data-bind="text: Count" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Pivot Facets
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            #set($pivot = $response.response.facet_counts.facet_pivot)
+                            #display_facet_pivot($pivot, "")
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+
+            <!-- Pagination
+            ================================================== -->
+            <div class="col-xs-8">
+                <div class="pagination">
+                    <!-- ko ifnot: Group()-->
+                    <span>
+                        <span class="results-found" data-bind="text: Found"></span>
+                        results found in <span data-bind="text:QueryTime"></span> ms
+                    </span>
+                    <!-- /ko -->
+                    <!--ko ifnot: Page() == 0 -->
+                    Page <span class="page-num" data-bind="text: Page"></span>
+                    <!-- ko ifnot: Group() -->
+                    of <span class="page-count" data-bind="text: PageCount"></span>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+
+                <!-- Main Content
+                ================================================== -->
+                <!-- ko if: showGroup-->
+                <div class="results" data-bind="template: {name: 'group-template', foreach: Results}">
+                </div>
+                <!-- /ko-->
+                <!-- ko ifnot: showGroup -->
+                <div class="results" data-bind="template: {name: 'doc-template', foreach: Results}">
+                </div>
+                <!-- /ko-->
+                <!-- Pagination
+                ================================================== -->
+                <div class="pagination" data-bind="visible: Results().length > 0">
+                    <!-- ko ifnot: Group -->
+                    <span class="results-found" data-bind="text: Found"></span>
+                    results found.
+                    <!-- /ko -->
+                    <!--ko ifnot: Page() == 0 -->
+                    Page <span class="page-num" data-bind="text: Page"></span>
+                    <!-- ko ifnot: Group() -->
+                    of <span class="page-count" data-bind="text: PageCount"></span>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <a class="next-page" href="javascript:void(0);" data-bind="enable: AllowPage, click: function() { PageNext(); }">next</a>
+                    <br />
+                </div>
+
+            </div>
+
+        </div>
+<div id="loading" class="loader" data-bind="visible: IsLoading">
+    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+</div>

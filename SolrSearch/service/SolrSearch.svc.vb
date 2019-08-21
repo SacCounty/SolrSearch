@@ -14,7 +14,7 @@ Public Class SolrSearch
 
     Public Function AutoComplete(request As AutoCompleteRequest) As AutoCompleteResponse Implements ISolrSearchAjax.AutoComplete
         Try
-            Dim host As String = ConfigurationManager.AppSettings("host")
+            Dim host As String = Environment.GetEnvironmentVariable("SolrHost")
             Dim collection As String = ConfigurationManager.AppSettings("collection")
             Dim endpoint As String = "/spell"
             Dim url As String = String.Format("{0}/{1}/{2}?q={3}&wt=json", host, collection, endpoint, request.Term)
@@ -33,12 +33,12 @@ Public Class SolrSearch
 
     Public Function Search(request As SearchRequest) As SearchResponse Implements ISolrSearchAjax.Search
         Try
-            Dim host As String = ConfigurationManager.AppSettings("host")
+            Dim host As String = Environment.GetEnvironmentVariable("SolrHost")
             Dim pipeline As String = ConfigurationManager.AppSettings("pipeline")
             Dim collection As String = ConfigurationManager.AppSettings("collection")
             Dim url As String = String.Format("http://{0}:8764/api/apollo/query-pipelines/{1}/collections/{2}/{3}?{4}", host, pipeline, collection, request.Handler, request.Request)
-            Dim username As String = ConfigurationManager.AppSettings("username")
-            Dim password As String = ConfigurationManager.AppSettings("password")
+            Dim username As String = Environment.GetEnvironmentVariable("SolrUsername")
+            Dim password As String = Environment.GetEnvironmentVariable("SolrPassword")
 
             Dim clienthandler = New HttpClientHandler()
 
@@ -61,7 +61,7 @@ Public Class SolrSearch
 
     Public Function Search(handler As String, q As String, sort As String, start As String, group As String, fq As String) As Stream Implements ISolrSearchRest.Search
         Try
-            Dim host As String = ConfigurationManager.AppSettings("host")
+            Dim host As String = Environment.GetEnvironmentVariable("SolrHost")
             Dim pipeline As String = ConfigurationManager.AppSettings("pipeline")
             Dim collection As String = ConfigurationManager.AppSettings("collection")
             Dim qs As String = String.Empty
@@ -85,8 +85,8 @@ Public Class SolrSearch
             qs = qs.TrimEnd("&")
 
             Dim url As String = String.Format("http://{0}:8764/api/apollo/query-pipelines/{1}/collections/{2}/{3}?{4}", host, pipeline, collection, handler, qs)
-                Dim username As String = ConfigurationManager.AppSettings("username")
-                Dim password As String = ConfigurationManager.AppSettings("password")
+                Dim username As String = Environment.GetEnvironmentVariable("SolrUsername")
+                Dim password As String = Environment.GetEnvironmentVariable("SolrPassword")
 
                 Dim clienthandler = New HttpClientHandler()
 
